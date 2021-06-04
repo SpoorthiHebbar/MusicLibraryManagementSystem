@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Login</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+</head>
+<body>
+    
+        <form class = "container" action="login" method="post" style="padding-top: 30px;">
+            {% csrf_token %}
+            <div class = "container p-3 my-3 bg-dark text-white">
+            <div class="text-center"><h3>Log-in</h3></div>
+            </div>
+            <div class ="form-group ">
+            <label for="username">Enter username</label> 
+            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required >
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="password"><br>
+            <button type="submit" class="btn btn-primary">sign in</button>
+            </div>
+            <p>New user? <a href= "{% url 'register' %}">register here</a></p>
+        </form>
+    
+            
+    
+        
+        
+    
+
+    <div>
+            {% for message in messages %}
+            <h3> {{message}}  </h3>
+            {% endfor %}
+    </div>
+</body>
+</html>

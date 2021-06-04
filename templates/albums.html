@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Albums </title>
+        <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="MyMusic template project">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+
+    </head>
+    <body>
+        <div class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="active nav-link" href="{% url 'index' %}">Home</a>
+            
+            {% if user.is_authenticated %}
+            <a class = "nav-link" href="{% url 'view_artists' %}">Artists</a>
+            <a class = "nav-link" href="{% url 'all_tracks' %}">All songs</a>
+            <a class = "nav-link" href="{% url 'view_genre' %}">Genre</a>
+            <a class = "nav-link" href="{% url 'view_list' %}">My List</a>
+            <a class = "nav-link" href="accounts/logout">Logout</a>
+            <form class="form-inline my-2 my-lg-0" action ="{% url 'search' %}" method="POST">
+                {% csrf_token %}
+                <input class="form-control mr-sm-2" type="search" placeholder="Search Albums" name="atitle" >
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            {%endif%}
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col text-center">
+                    <div class="section_subtitle">"With the right music, you either forget everything or you remember everything."</div>
+                    <div class="section_title">
+                        <h2>Albums</h2>
+                    </div>
+                </div>
+            </div>
+            <div>
+                {% for message in messages %}
+                <h3> {{message}}  </h3>
+                {% endfor %}
+            </div>
+            <div class="row row-cols-1 row-cols-md-3">
+                <div class="container">
+                    <div class="row">
+
+                        {% for album in albums %}
+                        <div class="col mb-4 "  style="width: 18rem;">
+                            <div class="card-img-top">
+                                <img src="{{ album.album_image.url }}" alt="" style="width:250px;height:250px;">
+                            </div>
+                           
+                            <div class="card-body">
+                                
+                                <h5 class="card-title text-left"><a href="{%url 'view_track' pk=album.id%}">{{album.album_title}}</a>
+                                
+                                {% if album.fave %}
+                                    (Popular)
+                                {% endif %}</h5>
+                                <p class="card-title text-right">
+                                <h6>{{album.artist.artist_name}}</h6>>
+                                {{album.release_date}}<br>
+                                {{album.genre}}<br>
+                                
+                              
+                            </div>
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+                </div>
+            
+            </div>
+        
+    </body>
+</html>

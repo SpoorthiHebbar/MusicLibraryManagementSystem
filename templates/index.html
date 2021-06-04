@@ -1,0 +1,108 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Music Store</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="MyMusic template project">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'mycss/index.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+     
+      .navbar {
+        margin-bottom: 0;
+        border-radius: 0;
+      }
+      
+     
+    </style>
+</head>
+
+<body>
+    <div class ='super_container'>
+        <div class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="active nav-link" href="index.html">Home</a>
+            
+            {% if user.is_authenticated %}
+            <a class = "nav-link" href="{% url 'view_artists' %}">Artists</a>
+            <a class = "nav-link" href="{% url 'all_tracks' %}">All songs</a>
+            <a class = "nav-link" href="{% url 'view_genre' %}">Genre</a>
+            <a class = "nav-link" href="{% url 'view_list' %}">My List</a>
+            <a class = "nav-link" href="accounts/logout">Logout</a>
+            <form class="form-inline my-2 my-lg-0" action ="{% url 'search' %}" method="POST">
+                {% csrf_token %}
+                <input class="form-control mr-sm-2" type="search" placeholder="Search Albums" name="atitle" >
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            
+            
+            {%else%}
+            <a class= "nav-link" href="accounts/register">Register</a>
+            <a class= "nav-link" href="accounts/login">Login</a>
+            {%endif%}
+        </div>
+
+        <div class ="content">
+            {%if user.is_authenticated%}
+            <h3>Hello {{user.first_name}}</h3>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col text-center">
+                        <div class="section_subtitle">"When words fail, music speaks" -Shakespeare.</div>
+                        <div class="section_title">
+                            <h2>Albums</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-cols-1 row-cols-md-3">
+                    <div class="container">
+                        <div class="row">
+    
+                            {% for album in albums %}
+                            <div class="col mb-4 "  style="width: 18rem;">
+                                <div class="card-img-top">
+                                    <img src="{{ album.album_image.url }}" alt="" style="width:250px;height:250px;">
+                                </div>
+                               
+                                <div class="card-body">
+                                    
+                                    <h5 class="card-title text-left"><a href="{%url 'view_track' pk=album.id%}">{{album.album_title}}</a>
+                                    
+                                    {% if album.fave %}
+                                        (Popular)
+                                    {% endif %}</h5>
+                                    <p class="card-title text-right">
+                                    <p>{{album.artist.artist_name}}</p></a>
+                                    {{album.release_date}}<br>
+                                    {{album.genre}}<br>
+                                    
+                                  
+                                </div>
+                            </div>
+    
+                            {% endfor %}
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+        {% else %}
+            <div class="content" >
+                <div class = "text-center" style="padding-top: 10px; padding-bottom: 5px;"><h4>"Music is the soundtrack of life" - D Clark </h4></div>
+                <div class = "text-center" style="padding-top: 10px; padding-bottom: 10px;"><img src="{% static 'background_image.jpg' %}" width= "800px" height="500px"></div>
+            </div>
+        {% endif %}
+
+    </div>
+
+</body>
