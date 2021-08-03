@@ -1,6 +1,10 @@
 from django.contrib import admin
 from django.urls import path , include
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.static import serve
+from django.conf.urls import url
 
 urlpatterns = [
     path('',views.index,name="index"),
@@ -16,4 +20,5 @@ urlpatterns = [
     path(r'^remove_from_list-(?P<pk>[0-9]+)',views.remove_from_list,name = "remove_from_list"),
     path('view_list',views.view_list,name = "view_list"),
     path('admin/', admin.site.urls),
-]
+    url(r'^download/(?P<path>.*)$',serve,{'document_root':settings.MEDIA_ROOT})
+]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

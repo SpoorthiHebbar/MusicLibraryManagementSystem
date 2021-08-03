@@ -37,6 +37,7 @@
                
                 <th scope="col">Track title</th>
                 <th scope="col">Track length</th>
+                <th scope="col">Track file</th>
                 <th scope="col"></th>
                 
                 
@@ -48,6 +49,9 @@
                 
                 <td>{{ track.track_title}}</td>
                 <td>{{track.track_length }}</td>
+                {% if track.track_songfile %}
+                <td> <a href="{{track.track_songfile.url}}" download="{{track.track_songfile.url}}">Download</a></td>
+                {% endif %}
                 <td><a href="{% url 'add_to_list' pk=track.id %}">Add</a></td>
               </tr>
              {% endfor%}

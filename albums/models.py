@@ -16,10 +16,17 @@ class albums(models.Model):
     release_date = models.DateField()
     fave = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.album_title
+
 class tracks(models.Model):
     album = models.ForeignKey(albums,on_delete = models.CASCADE)
     track_title = models.CharField(max_length=200)
+    track_songfile = models.FileField(upload_to='media',null=True)
     track_length = models.CharField(max_length=60)
+
+    def __str__(self):
+        return self.track_title
 
 class list(models.Model):
     user_id = models.ForeignKey(User,on_delete = models.CASCADE)

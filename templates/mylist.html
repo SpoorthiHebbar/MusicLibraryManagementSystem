@@ -30,6 +30,7 @@
                 
                 <th scope="col">Track title</th>
                 <th scope="col">Track length</th>
+                <th scope="col">Track file</th>
                 <th scope="col"></th>
                 
                 
@@ -41,6 +42,8 @@
                
                 <td>{{ song.track_id.track_title}}</td>
                 <td>{{song.track_id.track_length }}</td>
+                <td> <a href="{{song.track_songfile.url}}" download="{{song.track_songfile.url}}">Download</a></td>
+  
                 <td><a href="{% url 'remove_from_list' pk=song.id %}">Remove</a></td>
               </tr>
              {% endfor%}

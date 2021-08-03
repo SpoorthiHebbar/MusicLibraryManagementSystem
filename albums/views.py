@@ -1,9 +1,17 @@
+from io import FileIO
 from django.shortcuts import render, get_object_or_404,redirect
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import albums , tracks ,artists ,list
+from django.http.response import FileResponse, Http404
+from django.shortcuts import render
+import os
+from django.conf import settings
+from django.http import HttpResponse
+from django.utils.encoding import smart_str
+from wsgiref.util import FileWrapper
 
 def view_genre(request):
     objs = albums.objects.all()
@@ -15,6 +23,7 @@ def index(request):
 
     objs = albums.objects.all()                              #(SELECT * FROM albums)
     return render(request,'index.html',{'albums': objs})
+
 
 def view_track(request,pk = None):
     if pk is not None:
@@ -82,6 +91,15 @@ def add_to_list(request,pk):                                                    
     track = get_object_or_404(tracks,pk=pk)
     lists,created = list.objects.get_or_create(user_id=request.user,track_id = track)
     return redirect('view_list')
+
+def download(request,path):
+    file_path = os.path.join(settings.MEDIA_ROOT, path)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = FileResponse(fh.read(), content_type="audio/mpeg3")
+            response['Content-Disposition'] = 'attachment; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
 
 def view_list(request):
     objs = list.objects.filter(user_id=request.user)
